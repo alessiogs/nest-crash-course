@@ -9,9 +9,10 @@ import {
   Post,
   Put,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
-import { type CreateEpisodeDto } from './dto/episode.dto';
+import { CreateEpisodeDto } from './dto/episode.dto';
 import { ConfigService } from 'src/config/config.service';
 import { IsPositivePipe } from 'src/pipes/is-positive.pipe';
 
@@ -39,7 +40,7 @@ export class EpisodesController {
   }
 
   @Post()
-  create(@Body() payload: CreateEpisodeDto) {
+  create(@Body(ValidationPipe) payload: CreateEpisodeDto) {
     const genericConfiguration = this.configService.getGenericConfiguration();
     console.log('test configService injection', genericConfiguration);
     return this.episodesService.create(payload);
