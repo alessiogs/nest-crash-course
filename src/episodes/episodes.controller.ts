@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -11,6 +13,7 @@ import {
 import { EpisodesService } from './episodes.service';
 import { type CreateEpisodeDto } from './dto/episode.dto';
 import { ConfigService } from 'src/config/config.service';
+import { IsPositivePipe } from 'src/pipes/is-positive.pipe';
 
 @Controller('episodes')
 export class EpisodesController {
@@ -22,6 +25,8 @@ export class EpisodesController {
   @Get()
   findAll(
     @Query('sort') sort: 'asc' | 'desc' = 'desc',
+    @Query('limit', new DefaultValuePipe(100), ParseIntPipe, IsPositivePipe)
+    limit: number,
     @Query('featured') featured: boolean,
   ) {
     return this.episodesService.findAll(sort, featured);
