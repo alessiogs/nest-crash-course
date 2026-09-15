@@ -20,13 +20,11 @@ export class EpisodesController {
   ) {}
 
   @Get()
-  findAll(@Query('sort') sort: 'asc' | 'desc' = 'desc') {
-    return this.episodesService.findAll(sort);
-  }
-
-  @Get('featured')
-  findFeatured() {
-    return this.episodesService.findFeatured();
+  findAll(
+    @Query('sort') sort: 'asc' | 'desc' = 'desc',
+    @Query('featured') featured: boolean,
+  ) {
+    return this.episodesService.findAll(sort, featured);
   }
 
   @Get(':id')
