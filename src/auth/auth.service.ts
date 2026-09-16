@@ -5,6 +5,7 @@ import { User } from 'src/users/entity/user';
 import { JwtService } from '@nestjs/jwt';
 
 type UserDetail = Omit<User, 'password'>;
+export type AccessTokenPayload = { sub: string; email: string };
 
 @Injectable()
 export class AuthService {
@@ -33,9 +34,9 @@ export class AuthService {
   }
 
   signIn(user: UserDetail): UserDetail & { accessToken: string } {
-    const tokenPayload = {
+    const tokenPayload: AccessTokenPayload = {
       sub: user.id,
-      name: user.name,
+      email: user.email,
     };
 
     const accessToken = this.jwtService.sign(tokenPayload);
