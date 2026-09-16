@@ -7,11 +7,10 @@ import {
 import { randomUUID } from 'crypto';
 import { CreateEpisodeDto } from './dto/episode.dto';
 import { Episode } from './entity/episode.entity';
+import { mockEpisodes } from 'src/mock/episodes';
 
 @Injectable()
 export class EpisodesService {
-  private episodes: Episode[] = [];
-
   findAll(sort: 'asc' | 'desc', featured: boolean) {
     const sortAsc = (a: Episode, b: Episode) => (a.title > b.title ? 1 : -1);
 
@@ -20,7 +19,7 @@ export class EpisodesService {
     const sortFn = sort === 'asc' ? sortAsc : sortDesc;
 
     try {
-      const result = this.episodes
+      const result = mockEpisodes
         .filter((episode) => (featured ? episode.featured : true))
         .sort(sortFn);
 
@@ -36,7 +35,7 @@ export class EpisodesService {
 
   findOne(id: string) {
     try {
-      const result = this.episodes.find((episode) => episode.id === id);
+      const result = mockEpisodes.find((episode) => episode.id === id);
 
       if (!result) {
         throw new NotFoundException(`Episode with ID ${id} not found`);
@@ -62,7 +61,7 @@ export class EpisodesService {
         id: randomUUID(),
       };
 
-      this.episodes.push(newEpisode);
+      mockEpisodes.push(newEpisode);
 
       return newEpisode;
     } catch (error) {
